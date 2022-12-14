@@ -49,13 +49,13 @@ public class MyLocationProvider {
         return location;
     }
 
-    @SuppressLint("MissingPermission")
+
     private Location getBestLocation() {
 
             List<String> providers = locationManager.getAllProviders();
             Location bestLocation=null;
             for (String provider: providers) {
-
+                @SuppressLint("MissingPermission")
                 Location temp = locationManager.getLastKnownLocation(provider);
 
                 if (temp == null)

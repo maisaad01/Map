@@ -28,7 +28,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private ActivityMainBinding binding;
-    private static final int LOCATION_REQUEST_CODE = 100;
+    private static final Object LOCATION_PERMISSION_REQUEST_CODE = 100;
+    private static final int LOCATION_REQUEST_CODE = 10;
     MyLocationProvider myLocationProvider;
     Location location;
 
@@ -96,7 +97,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
         else {
             ActivityCompat.requestPermissions(MainActivity.this,
-                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},LOCATION_REQUEST_CODE);
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    (Integer) LOCATION_PERMISSION_REQUEST_CODE);
         }
     }
 
@@ -112,7 +114,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 //request permission
                 ActivityCompat.requestPermissions( MainActivity.this, new String[] {
                         Manifest.permission.ACCESS_FINE_LOCATION },
-                        LOCATION_REQUEST_CODE);
+                        (Integer) LOCATION_PERMISSION_REQUEST_CODE);
 
             }
         });
@@ -134,11 +136,13 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         switch (requestCode) {
             case LOCATION_REQUEST_CODE:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                if (grantResults.length > 0 &&
+                        grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     location = myLocationProvider.getCurrentLocation(null);
                     Log.d("dddd","onCreate: "+location);
                 }
-                Toast.makeText(this, "feature not available", Toast.LENGTH_SHORT).show();
+                else
+                    Toast.makeText(this, "feature not available", Toast.LENGTH_SHORT).show();
                 return;
         }
     }
@@ -159,11 +163,11 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             return;
         }
         userMarker= myGoogleMap.addMarker(new MarkerOptions()
-                        .title("fri")
+                        .title("yes")
                         .position(new LatLng(location.getLatitude(), location.getLongitude()))
         );
         //make camera focus on marker
         myGoogleMap.animateCamera (CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(),
-                location.getLongitude()),17));
+                location.getLongitude()),18));
     }
 }
